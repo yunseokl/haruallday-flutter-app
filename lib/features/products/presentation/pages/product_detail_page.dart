@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -6,7 +7,7 @@ import '../../../../core/services/product_service.dart';
 import '../../../../core/services/cart_service.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/injection/injection_container.dart';
-import '../../../cart/presentation/pages/cart_page.dart';
+import '../../../../core/router/app_router.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final String productId;
@@ -104,12 +105,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               action: SnackBarAction(
                 label: '장바구니 보기',
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CartPage(userId: userId),
-                    ),
-                  );
+                  context.push(AppRouter.cart);
                 },
               ),
             ),

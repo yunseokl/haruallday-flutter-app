@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../../../core/router/app_router.dart';
 
 class CategoryGrid extends StatelessWidget {
   const CategoryGrid({super.key});
@@ -60,12 +63,7 @@ class CategoryGrid extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             // 카테고리 페이지로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CategoryProductsPage(category: category),
-              ),
-            );
+            context.push('${AppRouter.products}?category=${category}');
           },
           child: Container(
             decoration: BoxDecoration(

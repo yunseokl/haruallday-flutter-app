@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/services/pet_service.dart';
@@ -126,7 +127,7 @@ class _AddPetPageState extends State<AddPetPage> {
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.pop(context, true); // 성공 시 true 반환
+          context.pop(true); // 성공 시 true 반환
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

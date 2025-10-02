@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/services/payment_service.dart';
 import '../../../../core/injection/injection_container.dart';
-import '../../../auth/presentation/pages/login_page.dart';
+import '../../../../core/router/app_router.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -64,11 +65,11 @@ class _ProfilePageState extends State<ProfilePage> {
         content: const Text('정말 로그아웃하시겠습니까?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () => context.pop(false),
             child: const Text('취소'),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () => context.pop(true),
             child: const Text('로그아웃'),
           ),
         ],
@@ -80,11 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
       
       if (mounted) {
         if (result['success'] == true) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-            (route) => false,
-          );
+          context.go(AppRouter.login);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -172,10 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 32),
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
+                context.go(AppRouter.login);
               },
               icon: Icon(MdiIcons.login),
               label: const Text('로그인하기'),

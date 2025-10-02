@@ -15,6 +15,9 @@ import '../services/recommendation_service.dart';
 import '../services/notification_service.dart';
 import '../services/cart_service.dart';
 import '../services/payment_service.dart';
+import '../repositories/product_repository.dart';
+import '../repositories/product_repository_impl.dart';
+import '../../features/products/presentation/cubit/products_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -22,7 +25,7 @@ Future<void> init() async {
   // External dependencies
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);
-  
+
   // Supabase 초기화
   await Supabase.initialize(
     url: AppConstants.supabaseUrl,
@@ -30,20 +33,25 @@ Future<void> init() async {
   );
   final supabaseClient = Supabase.instance.client;
   sl.registerLazySingleton(() => supabaseClient);
-  
+
   // Firebase Messaging
   final firebaseMessaging = FirebaseMessaging.instance;
   sl.registerLazySingleton(() => firebaseMessaging);
-  
+
   // Local Notifications
   final localNotifications = FlutterLocalNotificationsPlugin();
   sl.registerLazySingleton(() => localNotifications);
-  
+
   // Core
   sl.registerLazySingleton(() => Dio());
   sl.registerLazySingleton(() => DioClient(sl()));
-  
-  // Services
+
+  // Repositories
+  sl.registerLazySingleton<ProductRepository>(
+    () => ProductRepositoryImpl(sl()),
+  );
+
+  // Services (레거시 - 점진적으로 Repository로 이동)
   sl.registerLazySingleton(() => AuthService(sl(), sl()));
   sl.registerLazySingleton(() => ProductService(sl()));
   sl.registerLazySingleton(() => PetService(sl()));
@@ -52,16 +60,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => NotificationService(sl(), sl(), sl()));
   sl.registerLazySingleton(() => CartService(sl(), sl()));
   sl.registerLazySingleton(() => PaymentService(sl(), sl(), sl()));
-  
-  // Data sources
-  // TODO: Register data sources when needed
-  
-  // Repositories
-  // TODO: Register repositories when needed
-  
-  // Use cases
-  // TODO: Register use cases when needed
-  
-  // Blocs/Providers
-  // TODO: Register state management when needed
+
+  // Cubits (Factory로 등록 - 매번 새 인스턴스)
+  sl.registerFactory(() => ProductsCubit(sl()));
 }

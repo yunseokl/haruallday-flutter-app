@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/injection/injection_container.dart';
-import '../../../home/presentation/pages/home_page.dart';
-import 'login_page.dart';
+import '../../../../core/router/app_router.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -62,35 +62,20 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   Future<void> _checkAuthStatus() async {
     try {
       final isLoggedIn = await _authService.checkAutoLogin();
-      
+
       if (mounted) {
         if (isLoggedIn) {
           // 로그인 상태면 홈 페이지로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomePage(),
-            ),
-          );
+          context.go(AppRouter.home);
         } else {
           // 로그인 안 된 상태면 로그인 페이지로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const LoginPage(),
-            ),
-          );
+          context.go(AppRouter.login);
         }
       }
     } catch (e) {
       // 오류 발생 시 로그인 페이지로 이동
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(),
-          ),
-        );
+        context.go(AppRouter.login);
       }
     }
   }

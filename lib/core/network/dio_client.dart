@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
 import '../constants/app_constants.dart';
+import '../error/error_handler.dart';
 
 class DioClient {
   final Dio _dio;
@@ -17,7 +18,8 @@ class DioClient {
         'Accept': 'application/json',
       };
 
-    if (true) { // Debug mode
+    // 개발 모드에서만 로그 출력
+    if (AppConstants.isDevelopment) {
       _dio.interceptors.add(
         LogInterceptor(
           request: true,
@@ -41,7 +43,8 @@ class DioClient {
           handler.next(options);
         },
         onError: (error, handler) {
-          _logger.e('Dio error: ${error.message}');
+          final appError = ErrorHandler.handleError(error);
+          _logger.e('Dio error: ${appError.message}');
           handler.next(error);
         },
       ),

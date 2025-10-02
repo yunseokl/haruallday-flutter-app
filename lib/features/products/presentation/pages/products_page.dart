@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/services/product_service.dart';
 import '../../../../core/injection/injection_container.dart';
+import '../../../../core/router/app_router.dart';
 import '../widgets/product_card.dart';
 import '../widgets/product_search_bar.dart';
-import 'product_detail_page.dart';
 
 class ProductsPage extends StatefulWidget {
   final String? category;
@@ -277,14 +278,7 @@ class _ProductsPageState extends State<ProductsPage> with TickerProviderStateMix
           return ProductCard(
             product: product,
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductDetailPage(
-                    productId: product['id'],
-                  ),
-                ),
-              );
+              context.push('${AppRouter.productDetail}/${product['id']}');
             },
           );
         },

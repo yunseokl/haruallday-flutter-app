@@ -6,11 +6,13 @@ import '../../../../core/services/pet_service.dart';
 import '../../../../core/injection/injection_container.dart';
 
 class PetDetailPage extends StatefulWidget {
-  final Map<String, dynamic> pet;
+  final String petId;
+  final Map<String, dynamic>? pet;
 
   const PetDetailPage({
     super.key,
-    required this.pet,
+    required this.petId,
+    this.pet,
   });
 
   @override

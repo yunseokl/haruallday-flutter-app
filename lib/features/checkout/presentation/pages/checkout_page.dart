@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/services/payment_service.dart';
 import '../../../../core/injection/injection_container.dart';
+import '../../../../core/router/app_router.dart';
 
 class CheckoutPage extends StatefulWidget {
   final String userId;
@@ -98,15 +100,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
         if (paymentResult['success'] == true) {
           // 결제 성공
           if (mounted) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OrderCompletePage(
-                  orderId: orderResult['order_id'] as String,
-                  orderNumber: orderResult['order_number'] as String,
-                  totalAmount: orderResult['final_price'] as int,
-                ),
-              ),
+            context.go(
+              AppRouter.orderComplete,
+              extra: {
+                'orderId': orderResult['order_id'] as String,
+                'orderNumber': orderResult['order_number'] as String,
+                'totalAmount': orderResult['final_price'] as int,
+              },
             );
           }
         } else {
@@ -551,7 +551,7 @@ class OrderCompletePage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
+                    context.go(AppRouter.home);
                   },
                   child: const Text('홈으로 돌아가기'),
                 ),

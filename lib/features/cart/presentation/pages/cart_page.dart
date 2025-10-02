@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/services/cart_service.dart';
 import '../../../../core/injection/injection_container.dart';
+import '../../../../core/router/app_router.dart';
 import '../widgets/cart_item_card.dart';
 import '../widgets/cart_summary_card.dart';
 import '../widgets/coupon_input_widget.dart';
-import '../../../checkout/presentation/pages/checkout_page.dart';
 
 class CartPage extends StatefulWidget {
   final String userId;
@@ -164,16 +165,14 @@ class _CartPageState extends State<CartPage> {
       return;
     }
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CheckoutPage(
-          userId: widget.userId,
-          cartItems: _cartItems,
-          cartTotal: _cartTotal,
-          appliedCouponCode: _appliedCouponCode,
-        ),
-      ),
+    context.push(
+      AppRouter.checkout,
+      extra: {
+        'userId': widget.userId,
+        'cartItems': _cartItems,
+        'cartTotal': _cartTotal,
+        'appliedCouponCode': _appliedCouponCode,
+      },
     ).then((_) {
       // 결제 완료 후 장바구니 새로고침
       _loadCartData();
@@ -197,11 +196,11 @@ class _CartPageState extends State<CartPage> {
                     content: const Text('장바구니의 모든 상품을 제거하시겠습니까?'),
                     actions: [
                       TextButton(
-                        onPressed: () => Navigator.pop(context, false),
+                        onPressed: () => context.pop(false),
                         child: const Text('취소'),
                       ),
                       TextButton(
-                        onPressed: () => Navigator.pop(context, true),
+                        onPressed: () => context.pop(true),
                         child: const Text('확인'),
                       ),
                     ],
@@ -341,7 +340,7 @@ class _CartPageState extends State<CartPage> {
           ElevatedButton(
             onPressed: () {
               // 홈 페이지로 이동
-              Navigator.popUntil(context, (route) => route.isFirst);
+              context.go(AppRouter.home);
             },
             child: const Text('쇼핑 계속하기'),
           ),

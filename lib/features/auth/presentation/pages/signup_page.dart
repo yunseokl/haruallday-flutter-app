@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/injection/injection_container.dart';
-import '../../../home/presentation/pages/home_page.dart';
+import '../../../../core/router/app_router.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -74,13 +75,8 @@ class _SignUpPageState extends State<SignUpPage> {
               backgroundColor: Colors.green,
             ),
           );
-          
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomePage(),
-            ),
-          );
+
+          context.go(AppRouter.home);
         } else {
           // 회원가입 실패 시 에러 메시지 표시
           ScaffoldMessenger.of(context).showSnackBar(
@@ -364,7 +360,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        context.pop();
                       },
                       child: const Text('로그인'),
                     ),

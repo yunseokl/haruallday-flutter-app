@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/services/product_service.dart';
 import '../../../../core/services/cart_service.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/injection/injection_container.dart';
-import '../../../products/presentation/pages/products_page.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../products/presentation/widgets/product_card.dart';
-import '../../../products/presentation/pages/product_detail_page.dart';
 
 class FeaturedProducts extends StatefulWidget {
   const FeaturedProducts({super.key});
@@ -116,12 +116,7 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProductsPage(),
-                    ),
-                  );
+                  context.push(AppRouter.products);
                 },
                 child: const Text('전체보기'),
               ),
@@ -167,14 +162,7 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
                   child: ProductCard(
                     product: product,
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetailPage(
-                            productId: product['id'],
-                          ),
-                        ),
-                      );
+                      context.push('${AppRouter.productDetail}/${product['id']}');
                     },
                     onAddToCart: () => _addToCart(product),
                   ),

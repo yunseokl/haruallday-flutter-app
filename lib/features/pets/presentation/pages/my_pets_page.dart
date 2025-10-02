@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../core/services/pet_service.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/injection/injection_container.dart';
+import '../../../../core/router/app_router.dart';
 import '../widgets/pet_card.dart';
-import 'add_pet_page.dart';
-import 'pet_detail_page.dart';
 
 class MyPetsPage extends StatefulWidget {
   const MyPetsPage({super.key});
@@ -64,12 +64,7 @@ class _MyPetsPageState extends State<MyPetsPage> {
   }
 
   Future<void> _navigateToAddPet() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AddPetPage(),
-      ),
-    );
+    final result = await context.push(AppRouter.addPet);
 
     if (result == true) {
       _loadPets(); // 새 반려견이 추가되면 목록 새로고침
@@ -77,11 +72,9 @@ class _MyPetsPageState extends State<MyPetsPage> {
   }
 
   Future<void> _navigateToPetDetail(Map<String, dynamic> pet) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PetDetailPage(pet: pet),
-      ),
+    final result = await context.push(
+      '${AppRouter.petDetail}/${pet['id']}',
+      extra: pet,
     );
 
     if (result == true) {

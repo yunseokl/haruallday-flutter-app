@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../../../core/router/app_router.dart';
 
 class HealthTipsSection extends StatelessWidget {
   const HealthTipsSection({super.key});
@@ -87,13 +90,8 @@ class HealthTipCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // 건강 팁 상세 페이지로 이동
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HealthTipDetailPage(tip: tip),
-          ),
-        );
+        // 건강 팁 상세 페이지로 이동 (추후 구현)
+        // context.push('${AppRouter.healthTipDetail}/${tip.id}', extra: tip);
       },
       child: Container(
         decoration: BoxDecoration(

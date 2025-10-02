@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'core/injection/injection_container.dart' as di;
+import 'core/router/app_router.dart';
 import 'shared/themes/app_theme.dart';
-import 'features/auth/presentation/pages/splash_page.dart';
 import 'core/services/notification_service.dart';
 
 // 백그라운드 메시지 핸들러
@@ -16,16 +17,26 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
+  // 환경변수 로드
+  try {
+    await dotenv.load(fileName: '.env');
+  } catch (e) {
+    print('Warning: .env file not found. Using fallback values.');
+  }
+
   // Firebase 초기화
-  await Firebase.initializeApp();
-  
-  // 백그라운드 메시지 핸들러 등록
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  
+  try {
+    await Firebase.initializeApp();
+    // 백그라운드 메시지 핸들러 등록
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  } catch (e) {
+    print('Warning: Firebase initialization failed: $e');
+  }
+
   // 의존성 주입 초기화
   await di.init();
-  
+
   runApp(const HaruAllDayApp());
 }
 
@@ -54,12 +65,12 @@ class _HaruAllDayAppState extends State<HaruAllDayApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: '하루올데이',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const SplashPage(),
+      routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
     );
   }

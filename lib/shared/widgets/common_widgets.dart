@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 /// 공통 로딩 위젯
@@ -208,12 +209,12 @@ class ConfirmDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context, false),
+          onPressed: () => context.pop(false),
           child: Text(cancelText),
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context, true);
+            context.pop(true);
             onConfirm?.call();
           },
           child: Text(
