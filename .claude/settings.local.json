@@ -3,7 +3,9 @@
     "allow": [
       "Bash(flutter pub:*)",
       "Bash(flutter analyze:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nrefactor: 프로젝트 전체 리팩토링 및 아키텍처 개선\n\n주요 변경사항:\n\n## 1. 보안 강화\n- 환경변수 시스템 도입 (flutter_dotenv)\n- .env 파일로 민감한 정보 분리\n- app_constants.dart를 환경변수 기반으로 변경\n- .gitignore에 .env 추가\n\n## 2. 코드 생성 의존성 제거\n- json_serializable 제거하여 즉시 실행 가능하도록 개선\n- 모든 모델에 수동 JSON 직렬화 구현\n- build_runner 의존성 제거\n- UserModel, ProductModel, PetModel, CartItemModel, OrderModel 수동 구현\n\n## 3. 에러 핸들링 시스템 구축\n- AppError 추상 클래스 및 타입별 에러 클래스 생성\n- ErrorHandler로 중앙화된 에러 처리\n- Either 패턴(dartz) 도입\n\n## 4. 유틸리티 함수 추가\n- formatters.dart: 통화, 날짜, 전화번호 포매팅\n- validators.dart: 이메일, 비밀번호, 전화번호 검증\n\n## 5. Clean Architecture 적용\n- Repository 패턴 구현 (ProductRepository)\n- Cubit 상태관리 추가 (ProductsCubit, ProductsState)\n- 의존성 주입 업데이트\n\n## 6. 라우팅 개선\n- go_router 완전 통합\n- 13개 파일에서 Navigator → go_router 마이그레이션\n- AppRouter에 모든 라우트 정의\n- 인증 기반 리다이렉션 구현\n\n## 7. Firebase 및 에러 처리\n- main.dart에 Firebase 초기화 에러 핸들링 추가\n- 선택적 Firebase 지원\n\n## 8. 자산 구조 생성\n- assets/images, icons, animations, fonts 디렉토리 구조 생성\n- .gitkeep 파일로 디렉토리 유지\n\n## 9. 문서화\n- README.md 전면 개편\n- SETUP_GUIDE.md 추가\n- firebase_options.example.dart 생성\n- .env.example 생성\n\n변경된 파일: 22개 수정, 16개 신규 생성\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

@@ -72,8 +72,9 @@ class _MyPetsPageState extends State<MyPetsPage> {
   }
 
   Future<void> _navigateToPetDetail(Map<String, dynamic> pet) async {
-    final result = await context.push(
-      '${AppRouter.petDetail}/${pet['id']}',
+    final result = await context.pushNamed(
+      'petDetail',
+      pathParameters: {'id': pet['id'].toString()},
       extra: pet,
     );
 

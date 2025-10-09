@@ -162,7 +162,10 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
                   child: ProductCard(
                     product: product,
                     onTap: () {
-                      context.push('${AppRouter.productDetail}/${product['id']}');
+                      context.pushNamed(
+                        'productDetail',
+                        pathParameters: {'id': product['id'].toString()},
+                      );
                     },
                     onAddToCart: () => _addToCart(product),
                   ),
